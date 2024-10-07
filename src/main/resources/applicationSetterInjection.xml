@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- set up the nessary xml namespace schema details allow u to correctly validate spring bean tag -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- bean definitions here -->
+    <!--    id os the identification and class will be pointing it to it -->
+    <bean id="carSpecification" class="car.example.setter.injection.Specification">
+        <property name="make" value="Mahindra Thar"/>
+        <property name="model" value="LX Hard Top trim"/>
+    </bean>
+
+    <bean id="myCar" class="car.example.setter.injection.Car">
+        <property name="specification" ref="carSpecification"/>
+
+    </bean>
+
+</beans>
