@@ -7,14 +7,20 @@
 
     <!-- bean definitions here -->
     <!--    id os the identification and class will be pointing it to it -->
-    <bean id="userData" class="com.example.loose.coupling.UserDatabaseProvider">
-        <property name="make" value="Mahindra Thar"/>
-        <property name="model" value="LX Hard Top trim"/>
+
+
+    <bean id="userDataBaseProvider" class="com.ioc.coupling.UserDatabaseProvider">  </bean>
+    <bean id="WebServiceDataProvider" class="com.ioc.coupling.WebServerDataProvider">  </bean>
+
+    <bean id="userManagerUserDatabaseProvider" class="com.ioc.coupling.UserManager">
+    <constructor-arg ref="userDataBaseProvider"/>
+    </bean>
+    <bean id="userManagerWebServerDataProvider" class="com.ioc.coupling.UserManager">
+        <constructor-arg ref="WebServiceDataProvider"/>
     </bean>
 
-    <bean id="myCar" class="car.example.setter.injection.Car">
-        <property name="userDataProvider" ref=""/>
 
-    </bean>
+
+
 
 </beans>
