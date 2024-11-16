@@ -1,4 +1,4 @@
-package com.ioc.coupling;
+package com.example.ioc.coupling;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;

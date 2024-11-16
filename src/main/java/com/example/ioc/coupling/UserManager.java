@@ -1,4 +1,4 @@
-package com.ioc.coupling;
+package com.example.ioc.coupling;
 
 public class UserManager {
 
