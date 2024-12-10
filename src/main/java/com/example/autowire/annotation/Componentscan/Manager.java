@@ -17,7 +17,7 @@ public class Manager {
 
     //field injection
     @Autowired
-        @Qualifier("employee") // used when u have multiple same bean name (to specify which bean name)
+        @Qualifier("employee")
    private Manager manager;
 
     @Override
