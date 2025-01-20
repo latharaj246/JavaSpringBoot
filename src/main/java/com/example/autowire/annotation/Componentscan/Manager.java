@@ -9,7 +9,8 @@ public class Manager {
 
     private Employee employee;
 
-   // constructor injection (recommended)
+
+    // constructor injection (recommended)
     @Autowired
     public Manager(Employee employee) {
         this.employee = employee;
@@ -17,8 +18,8 @@ public class Manager {
 
     //field injection
     @Autowired
-        @Qualifier("employee")
-   private Manager manager;
+    @Qualifier("manager")
+    private Manager manager;
 
     @Override
     public String toString() {
