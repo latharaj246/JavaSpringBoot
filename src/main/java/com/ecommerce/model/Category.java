@@ -1,19 +1,21 @@
 package com.ecommerce.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "categories")
 public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
+    @NotBlank(message = "Category name cannot be null")
     private String categoryName;
 
-    public Category(Long categoryId, String categoryName) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-    }
+
 
 }
