@@ -1,13 +1,15 @@
 package com.ecommerce.service;
 
 import com.ecommerce.Repositories.CategoryRepository;
+import com.ecommerce.exceptions.APIException;
+import com.ecommerce.exceptions.ResourceNotFoundException;
 import com.ecommerce.model.Category;
+import com.ecommerce.payload.CategoryDTO;
+import com.ecommerce.payload.CategoryResponse;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,17 +22,28 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
 
     //Listing Category
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public CategoryResponse getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        if (categories.isEmpty())
+            throw new APIException("No category created till now ");
+
+        List<CategoryDTO> categoryDTOS = categories.stream()
+                .map(category -> modelMapper.map(categories, CategoryDTO.class))
+                .toList();
+        return CategoryResponse;
     }
 
     //Creating category
     public void createCategory(Category category) {
-
+        Category savdCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+        if (savdCategory != null) {
+            throw new APIException("category with the name " + category.getCategoryName() + "already exists!!!");
+        }
         categoryRepository.save(category);
-
     }
 
     //Deleting category
@@ -39,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categories.stream()
                 .filter(c -> c.getCategoryId().equals(categoryId))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("category", "categoryId", categoryId));
         if (category == null) {
             return "category not found ";
         }
@@ -59,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
             Category saveCategory = categoryRepository.save(existingCategory);
             return saveCategory;
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+            throw new ResourceNotFoundException("category", "categoryId", categoryId);
         }
     }
 
