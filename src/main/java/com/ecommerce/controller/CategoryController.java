@@ -1,6 +1,8 @@
 package com.ecommerce.controller;
 
 import com.ecommerce.model.Category;
+import com.ecommerce.payload.CategoryDTO;
+import com.ecommerce.payload.CategoryResponse;
 import com.ecommerce.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @RestController
 public class CategoryController {
@@ -19,17 +19,17 @@ public class CategoryController {
 
     // getting all the category
     @GetMapping("/api/public/categories")
-    public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> categories = categoryService.getAllCategories();
+    public ResponseEntity<CategoryResponse> getAllCategories() {
+        CategoryResponse categories = categoryService.getAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
 
     }
 
     //creating a category
     @PostMapping("/api/public/categories")
-    public ResponseEntity<String> crearteCategory(@Valid  @RequestBody Category category) {
+    public CategoryDTO crearteCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
 
-        categoryService.createCategory(category);
+        categoryService.createCategory(categoryDTO);
         return new ResponseEntity<>("Category added Successfully", HttpStatus.OK);
     }
 
@@ -52,7 +52,7 @@ public class CategoryController {
 
     // updating the category
     @PutMapping("/api/public/categories/{categoryId}")
-    public ResponseEntity<String> updateCategory(@RequestBody Category category, @PathVariable Long categoryId) {
+    public ResponseEntity<String> updateCategory(@Valid @RequestBody Category category, @PathVariable Long categoryId) {
         try {
             Category saveCategory = categoryService.updateCategory(category, categoryId);
             return new ResponseEntity<>(" Category with " + categoryId + " updated ", HttpStatus.OK);
