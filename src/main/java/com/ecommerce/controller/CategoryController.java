@@ -1,7 +1,5 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.exceptions.ResourceNotFondException;
-import com.ecommerce.model.Category;
 import com.ecommerce.payload.CategoryDTO;
 import com.ecommerce.payload.CategoryResponse;
 import com.ecommerce.service.CategoryService;
@@ -17,32 +15,32 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+
     // getting all the category
     @GetMapping("/api/public/categories")
     public ResponseEntity<CategoryResponse> getAllCategories() {
-        CategoryResponse categoryResponse   = categoryService.getAllCategories();
-        return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
-
+        CategoryResponse categories = categoryService.getAllCategories();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     //creating a category
     @PostMapping("/api/public/categories")
-    public ResponseEntity<CategoryDTO> crearteCategory(@Valid  @RequestBody CategoryDTO categoryDTO) {
-         CategoryDTO SaveCategoryDTO =  categoryService.createCategory(new CategoryDTO());
-        return  new ResponseEntity<>( SaveCategoryDTO, HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> crearteCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
+        CategoryDTO saverCategory = categoryService.createCategory(categoryDTO);
+        return new ResponseEntity<>(saverCategory, HttpStatus.CREATED);
     }
 
     //Deleting category
     @DeleteMapping("api/admin/categories/{categoryId}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
-        String status = categoryService.deleteCategory(categoryId);
-        return new ResponseEntity<>(status, HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long categoryId) {
+        CategoryDTO deletedCategory = categoryService.deleteCategory(categoryId);
+        return new ResponseEntity<>(deletedCategory, HttpStatus.OK);
     }
 
     // updating the category
     @PutMapping("/api/public/categories/{categoryId}")
-    public ResponseEntity<CategoryDTO> updateCategory( @Valid @RequestBody CategoryDTO categoryDTO, @PathVariable Long categoryId) {
-        CategoryDTO updatedCategory = categoryService.updateCategory(categoryDTO, categoryId);
-        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable Long categoryId) {
+        CategoryDTO saveCategory = categoryService.updateCategory(categoryDTO, categoryId);
+        return new ResponseEntity<CategoryDTO>(saveCategory, HttpStatus.OK);
     }
 }
